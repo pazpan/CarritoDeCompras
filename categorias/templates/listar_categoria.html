@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+
+        <!-- Formulario de categoría -->
+        <div class="col-md-4">
+            <h3>Categoria</h3>
+            <form action="Guardar_categoria/" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="nombre">Nombre_categoria</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingresa Nombre">
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                 <!-- Mostrar mensajes de error y éxito -->
+                {% if messages %}
+                {% for message in messages %}
+                    {%if message.tags == 'error'%}
+                    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                    {% else %} 
+                    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+                    {% endif %}
+                    <strong>{{ message }}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            </form>
+        </div>
+
+        <!-- Tabla de categorías -->
+        <div class="col-md-8">
+            <h3>Listado de Categorías</h3>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID Categoría</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Editar</th>
+                            <th scope="col">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for categoria in categorias %}
+                        <tr>
+                            <td>{{ categoria.id_categoria }}</td>
+                            <td>{{ categoria.nombre }}</td>
+                            <td class="text-center">
+                                <a href="Editar_categoria/{{ categoria.id_categoria }}" class="btn btn-primary btn-md">Editar</a>
+                            </td>
+                            <td class="text-center">
+                                <a href="Eliminar_categoria/{{ categoria.id_categoria }}" class="btn btn-danger btn-md">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

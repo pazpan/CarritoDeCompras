@@ -1,0 +1,134 @@
+<!-- Menú de Navegación -->
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+
+        <!-- Formulario de producto -->
+        <div class="col-md-4">
+            <h2>Producto</h2>
+            <form action="Guardar_producto/" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingresa Nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="precio">Precio</label>
+                    <input type="number" class="form-control" id="precio" name="precio" placeholder="Ingresa Precio">
+                </div>
+                <div class="form-group">
+                    <label for="stock">Stock</label>
+                    <input type="number" class="form-control" id="stock" name="stock" placeholder="Ingresa Stock" required>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripcion</label>
+                    <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Ingresa descripcion" required>
+                </div>
+                <div class="form-group">
+                    <label for="categoria">Categoría</label>
+                    <select class="form-control" id="categoria" name="categoria" required>
+                        {% for categorias in categoria %}
+                        <option value="{{ categorias.id_categoria }}">{{ categorias.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                 <!-- Mostrar mensajes de error y éxito -->
+                {% if messages %}
+                {% for message in messages %}
+                    {%if message.tags == 'error'%}
+                    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                    {% else %} 
+                    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+                    {% endif %}
+                    <strong>{{ message }}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            </form>
+        </div>
+
+        <!-- Tabla de productos -->
+        <div class="col-md-8">
+            <h2>Listado de Productos</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID Producto</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Stock</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Categoría</th>
+                            <th scope="col">Añadir al Carrito</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto.id_producto }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.precio }}</td>
+                            <td>{{ producto.stock }}</td>
+                            <td>{{ producto.descripcion}}</td>
+                            <td>{{ producto.categoria }}</td>
+                            <td class="text-center">
+                                <form action="Agregar_carrito/" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="producto_id" value="{{ producto.id_producto }}">
+                                    <button type="submit" class="btn btn-success btn-md">Añadir</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carrito de compras -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h2>Carrito de Compras</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID Producto</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in carrito %}
+                        <tr>
+                            <td>{{ producto.id_producto }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.precio }}</td>
+                            <td>{{ cantidad }}</td>
+                            <td class="text-center">
+                                <form action="Eliminar_carrito/" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="producto_id" value="{{ producto.id_producto }}">
+                                    <button type="submit" class="btn btn-danger btn-md">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-end">
+                <a href="realizar_compra/" class="btn btn-primary btn-lg">Realizar Compra</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

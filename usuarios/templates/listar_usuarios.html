@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Listado de Usuarios</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">RUT</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Perfil</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.rut }}</td>
+                    <td>{{ usuario.nombre }}</td>
+                    <td>{{ usuario.apellidos }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>{{ usuario.direccion }}</td>
+                    <td>{{ usuario.get_perfil_display }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

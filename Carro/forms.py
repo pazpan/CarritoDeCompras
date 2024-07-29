@@ -6,3 +6,6 @@ class RegistrationForm(UserCreationForm): # Definición del formulario Registrat
     class Meta: # Clase Meta para especificar el modelo y los campos que se usarán en el formulario
         model = User # El formulario se basa en el modelo User
         fields = ('username','email', 'password1', 'password2')  
+        
+        
+        
